@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand: warm wood tones */
+  --color-wood-50:  #fdf8f0;
+  --color-wood-100: #faefd9;
+  --color-wood-200: #f3d9a8;
+  --color-wood-300: #e9bd72;
+  --color-wood-400: #dd9c3e;
+  --color-wood-500: #c97f22;
+  --color-wood-600: #a8621a;
+  --color-wood-700: #864918;
+  --color-wood-800: #6d3b1a;
+  --color-wood-900: #5a3219;
+
+  /* Neutral: warm stone */
+  --color-stone-50:  #faf9f7;
+  --color-stone-100: #f0ede8;
+  --color-stone-200: #ddd9ce;
+  --color-stone-300: #c5bfae;
+  --color-stone-400: #a99e8a;
+  --color-stone-500: #8f8370;
+  --color-stone-600: #786d5f;
+  --color-stone-700: #625a4f;
+  --color-stone-800: #3d342c;
+  --color-stone-900: #221c16;
+
+  /* Brand accent: deep navy from logo */
+  --color-brand-50:  #eff4ff;
+  --color-brand-100: #dce7fd;
+  --color-brand-500: #3b6fd4;
+  --color-brand-600: #2c5bb8;
+  --color-brand-700: #1e3f8a;
+  --color-brand-800: #162d66;
+  --color-brand-900: #0e1f48;
+
+  /* Typography */
+  --font-family-serif: var(--font-cormorant), 'Georgia', serif;
+  --font-family-sans:  var(--font-raleway), 'system-ui', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: white;
+    color: var(--color-stone-800);
+    font-family: var(--font-family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-serif);
+    font-weight: 600;
+    color: var(--color-stone-900);
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    line-height: 1.75;
+  }
+}
+
+@layer components {
+  .section-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .section-padding {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  .container-max {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Primary CTA — warm wood */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--color-wood-700);
+    color: white;
+    font-family: var(--font-family-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    transition: background-color 0.2s, transform 0.15s;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-wood-800);
+  }
+
+  /* Secondary — outline */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border: 1px solid var(--color-wood-700);
+    color: var(--color-wood-700);
+    font-family: var(--font-family-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-wood-50);
+  }
+
+  /* Ghost */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--color-stone-600);
+    font-family: var(--font-family-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .btn-ghost:hover {
+    color: var(--color-wood-700);
+  }
+
+  /* WhatsApp CTA — green */
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0.875rem 2rem;
+    background-color: #25D366;
+    color: white;
+    font-family: var(--font-family-sans);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-whatsapp:hover {
+    background-color: #1da851;
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-family-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-wood-600);
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: var(--color-wood-400);
+    flex-shrink: 0;
+  }
+}
