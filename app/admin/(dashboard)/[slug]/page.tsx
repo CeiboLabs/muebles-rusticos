@@ -17,7 +17,7 @@ export default async function AdminCategoryPage({ params }: Props) {
 
   const { data: dbCat } = await supabase
     .from('categories')
-    .select('id')
+    .select('id, cover_image_url')
     .eq('slug', slug)
     .single()
 
@@ -58,6 +58,7 @@ export default async function AdminCategoryPage({ params }: Props) {
         categoryId={categoryId}
         categorySlug={slug}
         categoryName={cat.name}
+        initialCoverUrl={dbCat?.cover_image_url ?? null}
       />
     </div>
   )

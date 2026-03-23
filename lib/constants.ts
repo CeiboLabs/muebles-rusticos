@@ -7,8 +7,8 @@ export const SITE_DESCRIPTION =
   'En Muebles Rústicos Solymar creamos los muebles de tus sueños y los que no los inventamos. +30 años de experiencia artesanal en Uruguay.'
 
 export const CONTACT_INFO = {
-  phone1: '2696 3892',
-  phone2: '2696 0582',
+  phone1: '2696 0582',
+  phone2: '2696 3892',
   whatsapp: '59897492412',
   whatsappDisplay: '097 492 412',
   email: 'info@mueblesrusticos.com.uy',
@@ -36,16 +36,16 @@ export const STATS = [
 ]
 
 export const CATEGORIES = [
-  { name: 'Comedores',             slug: 'comedores',          description: 'Mesas y sillas de comedor artesanales',      cover: '/images/gallery/comedores/mesa-de-comedor-en-cipres-con-base-de-hierro.jpg' },
-  { name: 'Living',                slug: 'living',             description: 'Sofás, sillones y muebles para el living',   cover: '/images/cat-living.jpg' },
-  { name: 'Dormitorios',           slug: 'dormitorios',        description: 'Camas, placares y mesas de luz',             cover: '/images/gallery/dormitorios/respaldo-aro-de-15-cm-tapizado.jpg' },
-  { name: 'Dormitorios de Niños',  slug: 'dormitorios-ninos',  description: 'Muebles infantiles seguros y duraderos',     cover: '/images/gallery/dormitorios-ninos/cucheta-doble-patinada-hecha-a-medida.jpeg' },
-  { name: 'Baños y Cocinas',       slug: 'banos-y-cocinas',    description: 'Muebles para baño y cocina',                 cover: '/images/gallery/banos-y-cocinas/espejo-redondo-en-alamo.jpg' },
-  { name: 'Barbacoas',             slug: 'barbacoas',          description: 'Parrillas y estructuras para asado',         cover: '/images/cat-barbacoas.jpg' },
-  { name: 'Escritorios y Oficinas',slug: 'escritorios',        description: 'Escritorios y muebles de oficina',           cover: '/images/gallery/escritorios/escritorio-a-pedido-del-cliente-con-moldura-en-alamo.jpg' },
-  { name: 'Muebles de Exterior',   slug: 'exterior',           description: 'Muebles resistentes para exteriores',        cover: '/images/gallery/exterior/sillones-con-posabrazos-mas-bajo.jpg' },
-  { name: 'Hierro y Madera',       slug: 'hierro-y-madera',    description: 'Combinaciones de hierro forjado y madera',   cover: '/images/cat-hierro-madera.jpg' },
-  { name: 'Tapicería',             slug: 'tapiceria',          description: 'Tapizado artesanal de alta calidad',         cover: '/images/cat-tapiceria.jpg' },
-  { name: 'Pérgolas y Decks',      slug: 'pergolas-y-decks',   description: 'Estructuras de madera para exteriores',      cover: '/images/cat-pergolas.jpg' },
-  { name: 'Decoración',            slug: 'decoracion',         description: 'Piezas decorativas únicas',                  cover: '/images/cat-decoracion.jpg' },
+  { name: 'Comedores',             slug: 'comedores',          description: 'Mesas y sillas de comedor artesanales' },
+  { name: 'Living',                slug: 'living',             description: 'Sofás, sillones y muebles para el living' },
+  { name: 'Dormitorios',           slug: 'dormitorios',        description: 'Camas, placares y mesas de luz' },
+  { name: 'Dormitorios de Niños',  slug: 'dormitorios-ninos',  description: 'Muebles infantiles seguros y duraderos' },
+  { name: 'Baños y Cocinas',       slug: 'banos-y-cocinas',    description: 'Muebles para baño y cocina' },
+  { name: 'Barbacoas',             slug: 'barbacoas',          description: 'Parrillas y estructuras para asado' },
+  { name: 'Escritorios y Oficinas',slug: 'escritorios',        description: 'Escritorios y muebles de oficina' },
+  { name: 'Muebles de Exterior',   slug: 'exterior',           description: 'Muebles resistentes para exteriores' },
+  { name: 'Hierro y Madera',       slug: 'hierro-y-madera',    description: 'Combinaciones de hierro forjado y madera' },
+  { name: 'Tapicería',             slug: 'tapiceria',          description: 'Tapizado artesanal de alta calidad' },
+  { name: 'Pérgolas y Decks',      slug: 'pergolas-y-decks',   description: 'Estructuras de madera para exteriores' },
+  { name: 'Decoración',            slug: 'decoracion',         description: 'Piezas decorativas únicas' },
 ]

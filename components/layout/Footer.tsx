@@ -100,12 +100,12 @@ export default function Footer() {
           <p className="font-sans text-xs text-stone-400">
             Desarrollado por{' '}
             <a
-              href="https://orientalabs.dev"
+              href="https://ceibolabs.dev"
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold text-stone-300 hover:text-wood-400 transition-colors"
             >
-              Oriental Labs
+              Ceibo Labs
             </a>
           </p>
         </div>

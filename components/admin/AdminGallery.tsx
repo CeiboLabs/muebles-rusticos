@@ -13,17 +13,38 @@ interface Props {
   categoryId: number
   categorySlug: string
   categoryName: string
+  initialCoverUrl: string | null
 }
 
-export default function AdminGallery({ initialItems, categoryId, categorySlug, categoryName }: Props) {
+export default function AdminGallery({ initialItems, categoryId, categorySlug, categoryName, initialCoverUrl }: Props) {
   const [items, setItems] = useState(initialItems)
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null)
   const [deletingId, setDeletingId] = useState<number | null>(null)
   const [confirmItem, setConfirmItem] = useState<GalleryItem | null>(null)
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null)
+  const [coverUrl, setCoverUrl] = useState<string | null>(initialCoverUrl)
+  const [coverPickerOpen, setCoverPickerOpen] = useState(false)
+  const [settingCover, setSettingCover] = useState<string | null>(null)
 
   function showToast(msg: string, type: 'success' | 'error' = 'success') {
     setToast({ msg, type })
+  }
+
+  async function handleSetCover(imageUrl: string) {
+    setSettingCover(imageUrl)
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('categories')
+      .update({ cover_image_url: imageUrl })
+      .eq('id', categoryId)
+    setSettingCover(null)
+    if (error) {
+      showToast('Error al guardar el cover', 'error')
+    } else {
+      setCoverUrl(imageUrl)
+      setCoverPickerOpen(false)
+      showToast('Cover actualizado')
+    }
   }
 
   async function refresh() {
@@ -56,6 +77,27 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
 
   return (
     <>
+      {/* Cover section */}
+      <div className="bg-white border border-stone-100 rounded-sm shadow-sm p-5 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-serif text-lg font-semibold text-stone-900">Cover de categoría</h2>
+          <button
+            onClick={() => setCoverPickerOpen(true)}
+            disabled={items.length === 0}
+            className="btn-secondary text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {coverUrl ? 'Cambiar cover' : 'Elegir cover'}
+          </button>
+        </div>
+        {coverUrl ? (
+          <div className="relative w-48 aspect-[4/3] rounded-sm overflow-hidden bg-stone-100">
+            <Image src={coverUrl} alt="Cover actual" fill className="object-cover" sizes="192px" />
+          </div>
+        ) : (
+          <p className="font-sans text-sm text-stone-400">Sin cover asignado.</p>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
         {/* Uploader */}
         <div className="lg:col-span-1">
@@ -152,6 +194,56 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
           type={toast.type}
           onClose={() => setToast(null)}
         />
+      )}
+
+      {coverPickerOpen && (
+        <div className="fixed inset-0 z-50 bg-stone-950/60 flex items-center justify-center p-4" onClick={() => setCoverPickerOpen(false)}>
+          <div className="bg-white rounded-sm shadow-xl w-full max-w-3xl max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-stone-100">
+              <h2 className="font-serif text-lg font-semibold text-stone-900">Elegir cover — {categoryName}</h2>
+              <button onClick={() => setCoverPickerOpen(false)} className="text-stone-400 hover:text-stone-700 transition-colors">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="overflow-y-auto p-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {items.map(item => {
+                  const isSelected = item.image_url === coverUrl
+                  const isLoading = settingCover === item.image_url
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleSetCover(item.image_url)}
+                      disabled={!!settingCover}
+                      className={`relative aspect-square rounded-sm overflow-hidden border-2 transition-all ${
+                        isSelected ? 'border-wood-500 ring-2 ring-wood-300' : 'border-transparent hover:border-wood-300'
+                      }`}
+                    >
+                      <Image src={item.image_url} alt={item.title ?? ''} fill className="object-cover" sizes="(max-width: 640px) 50vw, 33vw" />
+                      {isSelected && (
+                        <div className="absolute top-2 right-2 w-6 h-6 bg-wood-500 rounded-full flex items-center justify-center shadow">
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      )}
+                      {isLoading && (
+                        <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
+                          <svg className="w-5 h-5 text-wood-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {confirmItem && (

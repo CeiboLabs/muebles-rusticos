@@ -17,6 +17,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const cat = CATEGORIES.find(c => c.slug === slug)
   if (!cat) return {}
+
+  const supabase = await createClient()
+  const { data: dbCat } = await supabase
+    .from('categories')
+    .select('cover_image_url')
+    .eq('slug', slug)
+    .single()
+
+  const coverUrl = dbCat?.cover_image_url ?? null
+
   return {
     title: cat.name,
     description: cat.description,
@@ -24,13 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${cat.name} | Muebles Rústicos Solymar`,
       description: cat.description,
-      images: [{ url: cat.cover, width: 1200, height: 630, alt: cat.name }],
+      ...(coverUrl && { images: [{ url: coverUrl, width: 1200, height: 630, alt: cat.name }] }),
     },
     twitter: {
       card: 'summary_large_image',
       title: `${cat.name} | Muebles Rústicos Solymar`,
       description: cat.description,
-      images: [cat.cover],
+      ...(coverUrl && { images: [coverUrl] }),
     },
   }
 }
