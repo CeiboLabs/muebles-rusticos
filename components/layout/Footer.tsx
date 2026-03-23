@@ -33,9 +33,9 @@ export default function Footer() {
 
             {/* Horario */}
             <div>
-              <h4 className="font-sans text-xs font-semibold tracking-widest uppercase text-stone-500 mb-3">
+              <p className="font-sans text-xs font-semibold tracking-widest uppercase text-stone-500 mb-3">
                 Horario
-              </h4>
+              </p>
               <ul className="space-y-1">
                 <li className="flex gap-3 justify-between">
                   <span>Lun – Vie</span>
@@ -50,9 +50,9 @@ export default function Footer() {
 
             {/* Contacto */}
             <div>
-              <h4 className="font-sans text-xs font-semibold tracking-widest uppercase text-stone-500 mb-3">
+              <p className="font-sans text-xs font-semibold tracking-widest uppercase text-stone-500 mb-3">
                 Contacto
-              </h4>
+              </p>
               <ul className="space-y-1.5">
                 <li>
                   <a href={`tel:${CONTACT_INFO.phone1.replace(/\s/g,'')}`} className="font-sans hover:text-wood-400 transition-colors">
@@ -72,9 +72,9 @@ export default function Footer() {
 
             {/* Nav */}
             <div>
-              <h4 className="font-sans text-xs font-semibold tracking-widest uppercase text-stone-500 mb-3">
+              <p className="font-sans text-xs font-semibold tracking-widest uppercase text-stone-500 mb-3">
                 Páginas
-              </h4>
+              </p>
               <ul className="space-y-1.5">
                 {[
                   { href: '/catalogo', label: 'Catálogo' },

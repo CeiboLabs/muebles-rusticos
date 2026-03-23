@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         pathname: '/storage/v1/object/public/**',
       },
     ],
-    // Allow all static image formats including uppercase extensions from camera
+    qualities: [75, 90],
     dangerouslyAllowSVG: false,
   },
 }

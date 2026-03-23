@@ -163,7 +163,7 @@
     justify-content: center;
     gap: 0.625rem;
     padding: 0.875rem 2rem;
-    background-color: #25D366;
+    background-color: #0e7a55;
     color: white;
     font-family: var(--font-family-sans);
     font-size: 0.875rem;
@@ -176,7 +176,7 @@
     border: none;
   }
   .btn-whatsapp:hover {
-    background-color: #1da851;
+    background-color: #0b5e41;
   }
 
   /* Eyebrow label */
@@ -189,7 +189,7 @@
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-wood-600);
+    color: var(--color-wood-700);
   }
   .eyebrow::before {
     content: '';
