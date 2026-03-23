@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { CONTACT_INFO } from '@/lib/constants'
 
 export default function HeroSection() {
   return (

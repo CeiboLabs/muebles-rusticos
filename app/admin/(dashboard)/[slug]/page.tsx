@@ -11,7 +11,7 @@ interface Props {
 export default async function AdminCategoryPage({ params }: Props) {
   const { slug } = await params
   const cat = CATEGORIES.find(c => c.slug === slug)
-  if (!cat) notFound()
+  if (!cat) return notFound()
 
   const supabase = await createClient()
 

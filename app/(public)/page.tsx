@@ -5,7 +5,7 @@ import ValueProposition from '@/components/home/ValueProposition'
 import CtaBanner from '@/components/home/CtaBanner'
 import MaderasSection from '@/components/home/MaderasSection'
 import { createClient } from '@/lib/supabase/server'
-import { SITE_NAME, SITE_DESCRIPTION } from '@/lib/constants'
+import { SITE_DESCRIPTION } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: { absolute: 'Muebles Rústicos Solymar | Uruguay' },

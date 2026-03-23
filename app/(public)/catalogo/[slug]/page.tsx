@@ -50,7 +50,7 @@ export const revalidate = 3600
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params
   const cat = CATEGORIES.find(c => c.slug === slug)
-  if (!cat) notFound()
+  if (!cat) return notFound()
 
   const supabase = await createClient()
   const { data: dbCat } = await supabase
@@ -101,7 +101,7 @@ export default async function CategoryPage({ params }: Props) {
       {/* Gallery */}
       <section className="py-12 bg-white">
         <div className="container-max section-padding">
-          <GalleryGrid items={galleryItems ?? []} />
+          <GalleryGrid items={galleryItems} />
         </div>
       </section>
 
