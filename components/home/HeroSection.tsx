@@ -13,6 +13,8 @@ export default function HeroSection() {
           fill
           className="object-cover object-center"
           priority
+          fetchPriority="high"
+          sizes="100vw"
           quality={90}
         />
         {/* Dark overlay for text legibility */}

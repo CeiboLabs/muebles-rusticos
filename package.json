@@ -8,6 +8,13 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "browserslist": [
+    "chrome 64",
+    "edge 79",
+    "firefox 67",
+    "opera 51",
+    "safari 12"
+  ],
   "dependencies": {
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.99.1",

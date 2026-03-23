@@ -50,6 +50,7 @@ export default function CategoryGrid({ dbCategories }: Props) {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  priority={FEATURED_SLUGS.indexOf(cat.slug) < 2}
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-wood-100 to-wood-200 flex items-center justify-center">
