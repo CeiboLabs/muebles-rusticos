@@ -39,6 +39,7 @@ export default function Header() {
               width={220}
               height={70}
               className="h-14 md:h-16 w-auto object-contain"
+              sizes="220px"
               priority
             />
           </Link>
