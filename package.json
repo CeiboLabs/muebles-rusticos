@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:worker": "npx @opennextjs/cloudflare build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -31,5 +32,9 @@
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.17.3",
+    "wrangler": "^4.77.0"
   }
 }
