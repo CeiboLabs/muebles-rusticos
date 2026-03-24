@@ -132,6 +132,7 @@ async function main() {
   const { data: items, error: itemsError } = await supabase
     .from('gallery_items')
     .select('id, image_url')
+    .not('image_url', 'is', null)
 
   if (itemsError) {
     console.error('❌  Error consultando gallery_items:', itemsError.message)
@@ -220,6 +221,42 @@ async function main() {
         errors++
       }
     }
+  }
+
+  // ── 3. Reparar cover_image_url de categorías ya convertidas ──────────────
+  // Si el .jpg fue eliminado al procesar gallery_items, sólo hay que
+  // actualizar la URL en la DB apuntando al .webp que ya existe.
+  console.log('\n🔧  Reparando cover_image_url de categorías pendientes...')
+  const { data: brokenCats, error: brokenErr } = await supabase
+    .from('categories')
+    .select('id, slug, cover_image_url')
+    .not('cover_image_url', 'is', null)
+    .not('cover_image_url', 'ilike', '%.webp')
+
+  if (brokenErr) {
+    console.error('❌  Error consultando categorías pendientes:', brokenErr.message)
+  } else if (brokenCats.length === 0) {
+    console.log('   Nada que reparar ✔')
+  } else {
+    let repaired = 0
+    for (const cat of brokenCats) {
+      const oldUrl = cat.cover_image_url
+      const newUrl = oldUrl.replace(/\.[^/.]+$/, '') + '.webp'
+      process.stdout.write(`   [${cat.slug}] → `)
+      const { error: dbError } = await supabase
+        .from('categories')
+        .update({ cover_image_url: newUrl })
+        .eq('id', cat.id)
+      if (dbError) {
+        console.log(`❌  ${dbError.message}`)
+        errors++
+      } else {
+        console.log('✅')
+        repaired++
+        errors = Math.max(0, errors - 1)
+      }
+    }
+    console.log(`   Reparadas: ${repaired}`)
   }
 
   // ── Resumen ───────────────────────────────────────────────────────────────

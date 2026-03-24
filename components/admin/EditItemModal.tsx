@@ -12,7 +12,7 @@ interface Props {
 }
 
 const MAX_DIMENSION = 1920
-const JPEG_QUALITY = 0.82
+const WEBP_QUALITY = 0.85
 
 // Always rotates from a blob (avoids chaining fetch of blob URLs)
 async function rotateBlobDegrees(blob: Blob, degrees: number): Promise<{ file: File; preview: string }> {
@@ -41,9 +41,9 @@ async function rotateBlobDegrees(blob: Blob, degrees: number): Promise<{ file: F
 
       canvas.toBlob(rotatedBlob => {
         if (!rotatedBlob) { reject(new Error('Canvas error')); return }
-        const file = new File([rotatedBlob], 'rotated.jpg', { type: 'image/jpeg' })
+        const file = new File([rotatedBlob], 'rotated.webp', { type: 'image/webp' })
         resolve({ file, preview: URL.createObjectURL(file) })
-      }, 'image/jpeg', JPEG_QUALITY)
+      }, 'image/webp', WEBP_QUALITY)
     }
     img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Load error')) }
     img.src = objectUrl
@@ -119,12 +119,11 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
       const oldPath = item.image_url.split('/gallery/')[1]?.split('?')[0]
       if (oldPath) {
         const folder = oldPath.split('/')[0]
-        const ext = oldPath.split('.').pop() ?? 'jpg'
-        const newPath = `${folder}/${Date.now()}.${ext}`
+        const newPath = `${folder}/${Date.now()}.webp`
 
         const { error: uploadError } = await supabase.storage
           .from('gallery')
-          .upload(newPath, rotatedFile, { contentType: 'image/jpeg' })
+          .upload(newPath, rotatedFile, { contentType: 'image/webp' })
 
         if (uploadError) {
           setError('Error al guardar la rotación: ' + uploadError.message)
