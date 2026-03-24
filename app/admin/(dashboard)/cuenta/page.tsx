@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PasswordInput from '@/components/admin/PasswordInput'
@@ -21,12 +21,22 @@ function validatePassword(password: string): string | null {
 
 export default function CuentaPage() {
   const router = useRouter()
+  const [email, setEmail] = useState<string | null>(null)
+  const [lastSignIn, setLastSignIn] = useState<string | null>(null)
   const [current, setCurrent] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
+
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data: { user } }) => {
+      if (!user) return
+      setEmail(user.email ?? null)
+      setLastSignIn(user.last_sign_in_at ?? null)
+    })
+  }, [])
 
   const passwordsMatch = password.length > 0 && confirm.length > 0 && password === confirm
   const passwordsMismatch = confirm.length > 0 && password !== confirm
@@ -84,7 +94,25 @@ export default function CuentaPage() {
   return (
     <div className="p-6 md:p-10 max-w-md">
       <h1 className="font-serif text-2xl font-semibold text-stone-900 mb-1">Mi cuenta</h1>
-      <p className="font-sans text-sm text-stone-500 mb-8">Cambie su contraseña de acceso al panel.</p>
+      <p className="font-sans text-sm text-stone-500 mb-6">Información de su cuenta y cambio de contraseña.</p>
+
+      {/* Account info */}
+      <div className="bg-stone-50 border border-stone-100 p-4 mb-8 space-y-2">
+        <div className="flex items-center gap-2">
+          <span className="font-sans text-xs font-semibold uppercase tracking-widest text-stone-400 w-24 shrink-0">Email</span>
+          <span className="font-sans text-sm text-stone-800">{email ?? '—'}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-sans text-xs font-semibold uppercase tracking-widest text-stone-400 w-24 shrink-0">Último acceso</span>
+          <span className="font-sans text-sm text-stone-800">
+            {lastSignIn
+              ? new Date(lastSignIn).toLocaleString('es-UY', { dateStyle: 'medium', timeStyle: 'short' })
+              : '—'}
+          </span>
+        </div>
+      </div>
+
+      <h2 className="font-serif text-lg font-semibold text-stone-900 mb-5">Cambiar contraseña</h2>
 
       <form onSubmit={handleFormSubmit} className="space-y-4">
         <div>

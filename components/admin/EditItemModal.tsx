@@ -14,30 +14,28 @@ interface Props {
 const MAX_DIMENSION = 1920
 const JPEG_QUALITY = 0.82
 
-async function rotateImageBlob(sourceUrl: string): Promise<{ file: File; preview: string }> {
-  // Fetch as blob first to avoid cross-origin canvas tainting
-  const response = await fetch(sourceUrl)
-  const blob = await response.blob()
-  const objectUrl = URL.createObjectURL(blob)
-
+// Always rotates from a blob (avoids chaining fetch of blob URLs)
+async function rotateBlobDegrees(blob: Blob, degrees: number): Promise<{ file: File; preview: string }> {
   return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(blob)
     const img = document.createElement('img')
     img.onload = () => {
       URL.revokeObjectURL(objectUrl)
 
-      // 90° clockwise: output width = input height
-      const outW = img.height
-      const outH = img.width
-      const scale = Math.min(1, MAX_DIMENSION / Math.max(outW, outH))
-      const finalW = Math.round(outW * scale)
-      const finalH = Math.round(outH * scale)
+      const rad = (degrees * Math.PI) / 180
+      const swap = degrees === 90 || degrees === 270
+      const natW = swap ? img.height : img.width
+      const natH = swap ? img.width : img.height
+      const scale = Math.min(1, MAX_DIMENSION / Math.max(natW, natH))
+      const outW = Math.round(natW * scale)
+      const outH = Math.round(natH * scale)
 
       const canvas = document.createElement('canvas')
-      canvas.width = finalW
-      canvas.height = finalH
+      canvas.width = outW
+      canvas.height = outH
       const ctx = canvas.getContext('2d')!
-      ctx.translate(finalW / 2, finalH / 2)
-      ctx.rotate(Math.PI / 2)
+      ctx.translate(outW / 2, outH / 2)
+      ctx.rotate(rad)
       ctx.scale(scale, scale)
       ctx.drawImage(img, -img.width / 2, -img.height / 2)
 
@@ -59,6 +57,9 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
   const [error, setError] = useState('')
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [rotatedFile, setRotatedFile] = useState<File | null>(null)
+  // Cache the original blob so we always rotate from source (no chaining)
+  const [originalBlob, setOriginalBlob] = useState<Blob | null>(null)
+  const [rotation, setRotation] = useState(0)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -70,7 +71,6 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
     }
   }, [onClose])
 
-  // Clean up object URLs on unmount
   useEffect(() => {
     return () => { if (previewUrl) URL.revokeObjectURL(previewUrl) }
   }, [previewUrl])
@@ -79,11 +79,28 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
     setRotating(true)
     setError('')
     try {
-      const sourceUrl = previewUrl ?? item.image_url
-      const { file, preview } = await rotateImageBlob(sourceUrl)
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
-      setPreviewUrl(preview)
-      setRotatedFile(file)
+      // Fetch original image only once, then reuse cached blob
+      let blob = originalBlob
+      if (!blob) {
+        const res = await fetch(item.image_url)
+        blob = await res.blob()
+        setOriginalBlob(blob)
+      }
+
+      const newRotation = (rotation + 90) % 360
+      setRotation(newRotation)
+
+      if (newRotation === 0) {
+        // Back to original — no modification needed
+        if (previewUrl) URL.revokeObjectURL(previewUrl)
+        setPreviewUrl(null)
+        setRotatedFile(null)
+      } else {
+        const { file, preview } = await rotateBlobDegrees(blob, newRotation)
+        if (previewUrl) URL.revokeObjectURL(previewUrl)
+        setPreviewUrl(preview)
+        setRotatedFile(file)
+      }
     } catch {
       setError('Error al rotar la imagen.')
     } finally {
@@ -118,7 +135,6 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
         const { data: { publicUrl } } = supabase.storage.from('gallery').getPublicUrl(newPath)
         newImageUrl = publicUrl
 
-        // Delete old file after successful upload
         await supabase.storage.from('gallery').remove([oldPath])
       }
     }
@@ -184,10 +200,10 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
             </button>
-            {/* Badge when rotated */}
-            {rotatedFile && (
+            {/* Badge showing current rotation */}
+            {rotation > 0 && (
               <span className="absolute bottom-2 right-2 bg-wood-700 text-white font-sans text-xs px-2 py-0.5 rounded-sm">
-                Rotada
+                {rotation}°
               </span>
             )}
           </div>
