@@ -13,7 +13,7 @@ const FEATURED_SLUGS = ['comedores', 'living', 'dormitorios', 'barbacoas', 'exte
 export default function CategoryGrid({ dbCategories }: Props) {
   const allCategories = CATEGORIES.map(c => {
     const dbCat = dbCategories?.find(d => d.slug === c.slug)
-    return { ...c, cover_image_url: dbCat?.cover_image_url ?? c.cover }
+    return { ...c, cover_image_url: dbCat?.cover_image_url ?? null }
   })
 
   // Solo las 6 destacadas

@@ -18,7 +18,7 @@ export default async function CatalogoPage() {
 
   const categories = CATEGORIES.map(c => {
     const db = dbCategories?.find(d => d.slug === c.slug)
-    return { ...c, cover_image_url: db?.cover_image_url ?? c.cover }
+    return { ...c, cover_image_url: db?.cover_image_url ?? null }
   })
 
   return (
