@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import PasswordInput from '@/components/admin/PasswordInput'
 
 const requirements = [
   { label: 'Mínimo 8 caracteres', test: (p: string) => p.length >= 8 },
@@ -90,14 +91,12 @@ export default function CuentaPage() {
           <label htmlFor="current" className="block font-sans text-xs font-semibold uppercase tracking-widest text-stone-500 mb-2">
             Contraseña actual
           </label>
-          <input
+          <PasswordInput
             id="current"
-            type="password"
             required
             autoComplete="current-password"
             value={current}
             onChange={e => setCurrent(e.target.value)}
-            placeholder="••••••••"
             className={inputClass}
           />
         </div>
@@ -106,14 +105,12 @@ export default function CuentaPage() {
           <label htmlFor="password" className="block font-sans text-xs font-semibold uppercase tracking-widest text-stone-500 mb-2">
             Nueva contraseña
           </label>
-          <input
+          <PasswordInput
             id="password"
-            type="password"
             required
             autoComplete="new-password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            placeholder="••••••••"
             className={inputClass}
           />
           {password.length > 0 && (
@@ -137,14 +134,12 @@ export default function CuentaPage() {
           <label htmlFor="confirm" className="block font-sans text-xs font-semibold uppercase tracking-widest text-stone-500 mb-2">
             Confirmar nueva contraseña
           </label>
-          <input
+          <PasswordInput
             id="confirm"
-            type="password"
             required
             autoComplete="new-password"
             value={confirm}
             onChange={e => setConfirm(e.target.value)}
-            placeholder="••••••••"
             className={`${inputClass} ${passwordsMatch ? 'border-green-400 ring-1 ring-green-400' : passwordsMismatch ? 'border-red-300' : ''}`}
           />
           {passwordsMatch && (

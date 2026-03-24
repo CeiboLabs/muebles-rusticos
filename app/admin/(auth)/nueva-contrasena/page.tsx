@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
+import PasswordInput from '@/components/admin/PasswordInput'
 
 const requirements = [
   { label: 'Mínimo 8 caracteres', test: (p: string) => p.length >= 8 },
@@ -82,14 +83,12 @@ export default function NuevaContrasenaPage() {
               <label htmlFor="password" className="block font-sans text-xs font-semibold uppercase tracking-widest text-stone-500 mb-2">
                 Nueva contraseña
               </label>
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 required
                 autoComplete="new-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
                 className={inputClass}
               />
               {password.length > 0 && (
@@ -113,14 +112,12 @@ export default function NuevaContrasenaPage() {
               <label htmlFor="confirm" className="block font-sans text-xs font-semibold uppercase tracking-widest text-stone-500 mb-2">
                 Confirmar contraseña
               </label>
-              <input
+              <PasswordInput
                 id="confirm"
-                type="password"
                 required
                 autoComplete="new-password"
                 value={confirm}
                 onChange={e => setConfirm(e.target.value)}
-                placeholder="••••••••"
                 className={`${inputClass} ${passwordsMatch ? 'border-green-400 ring-1 ring-green-400' : passwordsMismatch ? 'border-red-300' : ''}`}
               />
               {passwordsMatch && (
