@@ -48,6 +48,7 @@ export default function GalleryGrid({ items }: Props) {
                 style={{ height: 'auto' }}
                 className="w-full group-hover:scale-105 transition-transform duration-500"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={idx < 3}
               />
               {/* Overlay */}
               <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/50 transition-colors duration-300 flex flex-col items-center justify-center gap-3">

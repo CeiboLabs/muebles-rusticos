@@ -73,7 +73,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${crimson.variable} ${raleway.variable}`}>
+    <html lang="es" data-scroll-behavior="smooth" className={`${crimson.variable} ${raleway.variable}`}>
       <body>{children}</body>
     </html>
   )

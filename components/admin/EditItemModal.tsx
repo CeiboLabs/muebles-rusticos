@@ -166,6 +166,7 @@ export default function EditItemModal({ item, onClose, onSuccess }: Props) {
               fill
               unoptimized={!!previewUrl}
               className="object-contain"
+              sizes="(max-width: 768px) 100vw, 600px"
             />
             {/* Rotate button */}
             <button

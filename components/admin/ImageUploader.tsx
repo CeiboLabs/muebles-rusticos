@@ -195,6 +195,7 @@ export default function ImageUploader({ categoryId, categorySlug, onSuccess }: P
               alt="Preview"
               fill
               className="object-contain rounded-sm p-2"
+              sizes="(max-width: 768px) 100vw, 600px"
             />
             {/* Rotate button */}
             <button
