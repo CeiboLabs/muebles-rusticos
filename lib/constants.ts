@@ -2,7 +2,7 @@ export const STORAGE_LIMIT_BYTES = 150 * 1024 * 1024 // 150 MB
 
 export const SITE_NAME = 'Muebles Rústicos Solymar'
 export const SITE_TAGLINE = 'Creamos los muebles de tus sueños'
-export const SITE_URL = 'https://mueblesrusticos.com.uy'
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mueblesrusticos.com.uy'
 export const SITE_DESCRIPTION =
   'En Muebles Rústicos Solymar creamos los muebles de tus sueños y los que no los inventamos. +30 años de experiencia artesanal en Uruguay.'
 
