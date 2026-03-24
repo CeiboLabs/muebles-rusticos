@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/client'
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -18,11 +18,16 @@ export default function AdminLoginPage() {
     setLoading(true)
     setError('')
 
-    const supabase = createClient()
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
 
-    if (authError) {
-      setError('Email o contraseña incorrectos. Por favor verifique sus datos.')
+    const data = await res.json()
+
+    if (!res.ok) {
+      setError(data.error ?? 'Error al iniciar sesión.')
       setLoading(false)
       return
     }
@@ -114,6 +119,12 @@ export default function AdminLoginPage() {
                 <p className="font-sans text-sm text-red-700">{error}</p>
               </div>
             )}
+
+            <div className="flex justify-end">
+              <Link href="/admin/recuperar" className="font-sans text-xs text-stone-400 hover:text-stone-600 transition-colors">
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
 
             <button
               type="submit"
