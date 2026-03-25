@@ -26,7 +26,7 @@ export default function ValueProposition() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Image */}
           <div className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden">
+            <div className="relative aspect-[16/9] sm:aspect-[4/3] overflow-hidden">
               <Image
                 src="/images/banner-living-2.jpg"
                 alt="Mesa de living de madera rústica"
