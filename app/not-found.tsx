@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+
+export const metadata: Metadata = {
+  title: 'Página no encontrada | Muebles Rústicos Solymar',
+  robots: { index: false, follow: false },
+}
 
 export default function NotFound() {
   return (

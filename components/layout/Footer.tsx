@@ -13,7 +13,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="shrink-0">
-            <Link href="/" className="inline-block mb-4">
+            <Link href="/" className="inline-block mb-4" aria-label="Ir al inicio - Muebles Rústicos Solymar">
               <Image
                 src="/images/logo-transparent.png"
                 alt={SITE_NAME}

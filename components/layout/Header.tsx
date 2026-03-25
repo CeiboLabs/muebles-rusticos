@@ -32,7 +32,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-20 md:h-24">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0">
+          <Link href="/" className="flex items-center shrink-0" aria-label="Ir al inicio - Muebles Rústicos Solymar">
             <Image
               src="/images/logo-transparent.png"
               alt="Muebles Rústicos Solymar"

@@ -36,16 +36,16 @@ export const STATS = [
 ]
 
 export const CATEGORIES = [
-  { name: 'Comedores',             slug: 'comedores',          description: 'Mesas y sillas de comedor artesanales' },
-  { name: 'Living',                slug: 'living',             description: 'Sofás, sillones y muebles para el living' },
-  { name: 'Dormitorios',           slug: 'dormitorios',        description: 'Camas, placares y mesas de luz' },
-  { name: 'Dormitorios de Niños',  slug: 'dormitorios-ninos',  description: 'Muebles infantiles seguros y duraderos' },
-  { name: 'Baños y Cocinas',       slug: 'banos-y-cocinas',    description: 'Muebles para baño y cocina' },
-  { name: 'Barbacoas',             slug: 'barbacoas',          description: 'Parrillas y estructuras para asado' },
-  { name: 'Escritorios y Oficinas',slug: 'escritorios',        description: 'Escritorios y muebles de oficina' },
-  { name: 'Muebles de Exterior',   slug: 'exterior',           description: 'Muebles resistentes para exteriores' },
-  { name: 'Hierro y Madera',       slug: 'hierro-y-madera',    description: 'Combinaciones de hierro forjado y madera' },
-  { name: 'Tapicería',             slug: 'tapiceria',          description: 'Tapizado artesanal de alta calidad' },
-  { name: 'Pérgolas y Decks',      slug: 'pergolas-y-decks',   description: 'Estructuras de madera para exteriores' },
-  { name: 'Decoración',            slug: 'decoracion',         description: 'Piezas decorativas únicas' },
+  { name: 'Comedores',             slug: 'comedores',          description: 'Mesas y sillas de comedor fabricadas a medida en madera maciza en Uruguay. Diseño artesanal único para tu hogar por Muebles Rústicos Solymar.' },
+  { name: 'Living',                slug: 'living',             description: 'Sofás, sillones y muebles de living a medida en madera maciza. Diseño artesanal uruguayo para espacios únicos por Muebles Rústicos Solymar.' },
+  { name: 'Dormitorios',           slug: 'dormitorios',        description: 'Camas, placares y mesas de luz fabricados a medida en madera maciza en Uruguay. Dormitorios artesanales únicos por Muebles Rústicos Solymar.' },
+  { name: 'Dormitorios de Niños',  slug: 'dormitorios-ninos',  description: 'Muebles infantiles seguros y duraderos fabricados a medida en madera maciza en Uruguay. Diseños únicos para niños por Muebles Rústicos Solymar.' },
+  { name: 'Baños y Cocinas',       slug: 'banos-y-cocinas',    description: 'Muebles de baño y cocina a medida en madera maciza, fabricados artesanalmente en Uruguay. Calidad y diseño por Muebles Rústicos Solymar.' },
+  { name: 'Barbacoas',             slug: 'barbacoas',          description: 'Parrillas y estructuras para asado fabricadas a medida en madera maciza en Uruguay. Diseño artesanal único por Muebles Rústicos Solymar.' },
+  { name: 'Escritorios y Oficinas',slug: 'escritorios',        description: 'Escritorios y muebles de oficina a medida en madera maciza, fabricados artesanalmente en Uruguay. Diseño y funcionalidad por Muebles Rústicos Solymar.' },
+  { name: 'Muebles de Exterior',   slug: 'exterior',           description: 'Muebles de exterior resistentes fabricados a medida en madera maciza en Uruguay. Diseño artesanal duradero por Muebles Rústicos Solymar.' },
+  { name: 'Hierro y Madera',       slug: 'hierro-y-madera',    description: 'Combinaciones únicas de hierro forjado y madera maciza fabricadas a medida en Uruguay. Estilo rústico e industrial por Muebles Rústicos Solymar.' },
+  { name: 'Tapicería',             slug: 'tapiceria',          description: 'Tapizado artesanal de alta calidad a medida en Uruguay. Sofás, sillones y sillas tapizados con +30 años de experiencia por Muebles Rústicos Solymar.' },
+  { name: 'Pérgolas y Decks',      slug: 'pergolas-y-decks',   description: 'Pérgolas y decks de madera maciza fabricados a medida en Uruguay. Estructuras artesanales para exteriores únicos por Muebles Rústicos Solymar.' },
+  { name: 'Decoración',            slug: 'decoracion',         description: 'Piezas decorativas únicas fabricadas a medida en madera maciza en Uruguay. Arte artesanal para espacios únicos por Muebles Rústicos Solymar.' },
 ]
