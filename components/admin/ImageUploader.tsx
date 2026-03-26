@@ -74,8 +74,8 @@ export default function ImageUploader({ categoryId, categorySlug, onSuccess }: P
       setError('Solo se aceptan archivos de imagen.')
       return
     }
-    if (file.size > 2.5 * 1024 * 1024) {
-      setError('La imagen no puede superar 2,5 MB.')
+    if (file.size > 5 * 1024 * 1024) {
+      setError('La imagen no puede superar 5 MB.')
       return
     }
     setError('')
@@ -232,7 +232,7 @@ export default function ImageUploader({ categoryId, categorySlug, onSuccess }: P
             <p className="font-sans text-sm text-stone-500">
               <span className="text-wood-600 font-medium">Haga clic</span> o arrastre una imagen aquí
             </p>
-            <p className="font-sans text-xs text-stone-400 mt-1">JPG, PNG, WEBP — máx. 2,5 MB</p>
+            <p className="font-sans text-xs text-stone-400 mt-1">JPG, PNG, WEBP — máx. 5 MB</p>
           </div>
         )}
       </div>
