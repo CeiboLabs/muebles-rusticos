@@ -5,11 +5,11 @@ const isDev = process.env.NODE_ENV === 'development'
 const ContentSecurityPolicy = [
   "default-src 'self'",
   // unsafe-inline needed for Next.js runtime; unsafe-eval only in dev for HMR
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+  `script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://*.supabase.co",
   "font-src 'self'",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com",
   "frame-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",
