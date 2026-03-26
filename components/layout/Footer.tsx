@@ -22,7 +22,7 @@ export default function Footer() {
                 className="h-11 w-auto object-contain"
               />
             </Link>
-            <p className="font-sans text-sm text-stone-400 leading-relaxed max-w-[200px]">
+            <p className="font-sans text-sm text-stone-400 leading-relaxed whitespace-nowrap">
               Artesanía uruguaya desde 1994.<br />
               +30 años fabricando muebles a medida.
             </p>
