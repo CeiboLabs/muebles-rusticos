@@ -180,14 +180,9 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
                       </button>
                     </div>
                   </div>
-                  {(item.title || item.description) && (
+                  {item.title && (
                     <div className="p-3 border-t border-stone-50">
-                      {item.title && (
-                        <p className="font-sans text-xs font-medium text-stone-700 truncate">{item.title}</p>
-                      )}
-                      {item.description && (
-                        <p className="font-sans text-xs text-stone-400 truncate mt-0.5">{item.description}</p>
-                      )}
+                      <p className="font-sans text-xs font-medium text-stone-700 truncate">{item.title}</p>
                     </div>
                   )}
                 </div>

@@ -10,7 +10,6 @@ export interface GalleryItem {
   id: number
   category_id: number
   title: string | null
-  description: string | null
   image_url: string
   size_bytes?: number | null
   created_at: string
