@@ -8,16 +8,21 @@ import EditItemModal from './EditItemModal'
 import ImageUploader from './ImageUploader'
 import Toast from './Toast'
 
+const ADMIN_PAGE_SIZE = 20
+
 interface Props {
   initialItems: GalleryItem[]
   categoryId: number
   categorySlug: string
   categoryName: string
   initialCoverUrl: string | null
+  initialUsedBytes: number
 }
 
-export default function AdminGallery({ initialItems, categoryId, categorySlug, categoryName, initialCoverUrl }: Props) {
+export default function AdminGallery({ initialItems, categoryId, categorySlug, categoryName, initialCoverUrl, initialUsedBytes }: Props) {
   const [items, setItems] = useState(initialItems)
+  const [page, setPage] = useState(0)
+  const [usedBytes, setUsedBytes] = useState(initialUsedBytes)
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null)
   const [deletingId, setDeletingId] = useState<number | null>(null)
   const [confirmItem, setConfirmItem] = useState<GalleryItem | null>(null)
@@ -25,6 +30,9 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
   const [coverUrl, setCoverUrl] = useState<string | null>(initialCoverUrl)
   const [coverPickerOpen, setCoverPickerOpen] = useState(false)
   const [settingCover, setSettingCover] = useState<string | null>(null)
+
+  const totalPages = Math.ceil(items.length / ADMIN_PAGE_SIZE)
+  const pagedItems = items.slice(page * ADMIN_PAGE_SIZE, (page + 1) * ADMIN_PAGE_SIZE)
 
   function showToast(msg: string, type: 'success' | 'error' = 'success') {
     setToast({ msg, type })
@@ -55,6 +63,7 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
       .eq('category_id', categoryId)
       .order('created_at', { ascending: false })
     setItems(data ?? [])
+    setPage(0)
   }
 
   async function handleDelete(item: GalleryItem) {
@@ -71,7 +80,13 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
     // Remove from DB
     await supabase.from('gallery_items').delete().eq('id', item.id)
     setDeletingId(null)
-    setItems(prev => prev.filter(i => i.id !== item.id))
+    setItems(prev => {
+      const next = prev.filter(i => i.id !== item.id)
+      const newTotalPages = Math.ceil(next.length / ADMIN_PAGE_SIZE)
+      setPage(p => Math.min(p, Math.max(0, newTotalPages - 1)))
+      return next
+    })
+    setUsedBytes(prev => prev - (item.size_bytes ?? 0))
     showToast('Imagen eliminada')
   }
 
@@ -106,7 +121,8 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
             <ImageUploader
               categoryId={categoryId}
               categorySlug={categorySlug}
-              onSuccess={() => { refresh(); showToast('Imagen subida correctamente') }}
+              usedBytes={usedBytes}
+              onSuccess={(sizeBytes: number) => { refresh(); setUsedBytes(prev => prev + sizeBytes); showToast('Imagen subida correctamente') }}
             />
           </div>
         </div>
@@ -122,8 +138,9 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
               </p>
             </div>
           ) : (
+            <>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {items.map(item => (
+              {pagedItems.map(item => (
                 <div key={item.id} className="group relative bg-white border border-stone-100 rounded-sm overflow-hidden shadow-sm">
                   <div className="relative aspect-square">
                     <Image
@@ -176,6 +193,30 @@ export default function AdminGallery({ initialItems, categoryId, categorySlug, c
                 </div>
               ))}
             </div>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-stone-100">
+                <span className="font-sans text-xs text-stone-400">
+                  Página {page + 1} de {totalPages} · {items.length} imágenes
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setPage(p => Math.max(0, p - 1))}
+                    disabled={page === 0}
+                    className="btn-ghost text-sm disabled:opacity-40"
+                  >
+                    ← Anterior
+                  </button>
+                  <button
+                    onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                    disabled={page >= totalPages - 1}
+                    className="btn-ghost text-sm disabled:opacity-40"
+                  >
+                    Siguiente →
+                  </button>
+                </div>
+              </div>
+            )}
+            </>
           )}
         </div>
       </div>

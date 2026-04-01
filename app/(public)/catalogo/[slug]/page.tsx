@@ -59,13 +59,17 @@ export default async function CategoryPage({ params }: Props) {
     .eq('slug', slug)
     .single()
 
-  const { data: supabaseItems } = await supabase
+  // Fetch first page only; client loads more via /api/gallery
+  const INITIAL_LIMIT = 24
+  const { data: supabaseItems, count: totalCount } = await supabase
     .from('gallery_items')
-    .select('*')
+    .select('id, image_url, title, description, created_at, category_id', { count: 'exact' })
     .eq('category_id', dbCat?.id ?? 0)
     .order('created_at', { ascending: false })
+    .limit(INITIAL_LIMIT)
 
   const galleryItems = supabaseItems ?? []
+  const categoryId = dbCat?.id ?? 0
 
   return (
     <>
@@ -101,7 +105,7 @@ export default async function CategoryPage({ params }: Props) {
       {/* Gallery */}
       <section className="py-12 bg-white">
         <div className="container-max section-padding">
-          <GalleryGrid items={galleryItems} />
+          <GalleryGrid items={galleryItems} categoryId={categoryId} totalCount={totalCount ?? galleryItems.length} />
         </div>
       </section>
 

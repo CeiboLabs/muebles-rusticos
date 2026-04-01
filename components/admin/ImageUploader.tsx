@@ -8,7 +8,8 @@ import { STORAGE_LIMIT_BYTES } from '@/lib/constants'
 interface Props {
   categoryId: number
   categorySlug: string
-  onSuccess: () => void
+  usedBytes: number
+  onSuccess: (sizeBytes: number) => void
 }
 
 interface FormState {
@@ -59,7 +60,7 @@ async function processImage(file: File, rotateDegrees = 0): Promise<{ file: File
   })
 }
 
-export default function ImageUploader({ categoryId, categorySlug, onSuccess }: Props) {
+export default function ImageUploader({ categoryId, categorySlug, usedBytes, onSuccess }: Props) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [form, setForm] = useState<FormState>({
     title: '', file: null, preview: null, rotation: 0,
@@ -122,9 +123,7 @@ export default function ImageUploader({ categoryId, categorySlug, onSuccess }: P
     try {
       const supabase = createClient()
 
-      // Check storage limit before uploading
-      const { data: storageData } = await supabase.from('gallery_items').select('size_bytes')
-      const usedBytes = (storageData ?? []).reduce((sum, r) => sum + (r.size_bytes ?? 0), 0)
+      // Check storage limit using the value passed from the server (no extra DB round trip)
       if (usedBytes + form.file.size > STORAGE_LIMIT_BYTES) {
         const limitMB = (STORAGE_LIMIT_BYTES / 1024 / 1024).toFixed(0)
         setError(`Límite de almacenamiento alcanzado (${limitMB} MB). No se pueden subir más imágenes.`)
@@ -156,8 +155,9 @@ export default function ImageUploader({ categoryId, categorySlug, onSuccess }: P
 
       if (dbError) throw dbError
 
+      const uploadedSize = form.file.size
       setForm({ title: '', file: null, preview: null, rotation: 0 })
-      onSuccess()
+      onSuccess(uploadedSize)
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error desconocido'
       setError(`Error al subir: ${msg}`)

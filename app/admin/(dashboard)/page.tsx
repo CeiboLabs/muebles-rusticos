@@ -5,40 +5,41 @@ import { CATEGORIES, STORAGE_LIMIT_BYTES } from '@/lib/constants'
 export default async function AdminDashboardPage() {
   const supabase = await createClient()
 
-  const { count: totalItems } = await supabase
-    .from('gallery_items')
-    .select('*', { count: 'exact', head: true })
+  // Run all queries concurrently; combine the two gallery_items full scans into one
+  const [
+    { data: recentItems },
+    { data: statsData },
+    { data: dbCategories },
+  ] = await Promise.all([
+    supabase
+      .from('gallery_items')
+      .select('*, category:categories(name,slug)')
+      .order('created_at', { ascending: false })
+      .limit(5),
+    supabase
+      .from('gallery_items')
+      .select('category_id, size_bytes'),
+    supabase
+      .from('categories')
+      .select('id, slug'),
+  ])
 
-  const { data: recentItems } = await supabase
-    .from('gallery_items')
-    .select('*, category:categories(name,slug)')
-    .order('created_at', { ascending: false })
-    .limit(5)
-
-  const { data: countPerCategory } = await supabase
-    .from('gallery_items')
-    .select('category_id')
+  const totalItems = statsData?.length ?? 0
 
   const countMap: Record<number, number> = {}
-  for (const row of countPerCategory ?? []) {
+  let usedBytes = 0
+  for (const row of statsData ?? []) {
     countMap[row.category_id] = (countMap[row.category_id] ?? 0) + 1
+    usedBytes += row.size_bytes ?? 0
   }
-
-  const { data: dbCategories } = await supabase
-    .from('categories')
-    .select('id, slug')
 
   const slugToCount: Record<string, number> = {}
   for (const dbCat of dbCategories ?? []) {
     slugToCount[dbCat.slug] = countMap[dbCat.id] ?? 0
   }
 
-  const { data: storageData } = await supabase
-    .from('gallery_items')
-    .select('size_bytes')
-  const usedBytes = (storageData ?? []).reduce((sum, r) => sum + (r.size_bytes ?? 0), 0)
-  const limitMB = parseFloat((STORAGE_LIMIT_BYTES / 1024 / 1024).toFixed(1))
-  const usedMBRounded = parseFloat((usedBytes / 1024 / 1024).toFixed(1))
+  const limitMB = STORAGE_LIMIT_BYTES / 1024 / 1024
+  const usedMBRounded = usedBytes / 1024 / 1024
   const usedMB = usedMBRounded.toFixed(1)
   const usagePercent = Math.min(100, (usedMBRounded / limitMB) * 100)
 

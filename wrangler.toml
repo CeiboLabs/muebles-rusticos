@@ -6,3 +6,7 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "RATE_LIMITS"
+id = "1c37e0f0d2f14049b6489047023417ad"

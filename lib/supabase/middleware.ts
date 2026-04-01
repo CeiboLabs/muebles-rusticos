@@ -2,6 +2,13 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Only admin routes need session validation — skip the Supabase round trip for all public pages
+  if (!pathname.startsWith('/admin')) {
+    return NextResponse.next()
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -29,14 +36,12 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { pathname } = request.nextUrl
-  const isAdminRoute = pathname.startsWith('/admin')
   const isPublicAuthRoute =
     pathname === '/admin/login' ||
     pathname === '/admin/recuperar' ||
     pathname === '/admin/nueva-contrasena'
 
-  if (isAdminRoute && !isPublicAuthRoute && !user) {
+  if (!isPublicAuthRoute && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login'
     return NextResponse.redirect(url)

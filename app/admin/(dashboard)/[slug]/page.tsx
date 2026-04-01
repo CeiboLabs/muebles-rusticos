@@ -15,13 +15,14 @@ export default async function AdminCategoryPage({ params }: Props) {
 
   const supabase = await createClient()
 
-  const { data: dbCat } = await supabase
-    .from('categories')
-    .select('id, cover_image_url')
-    .eq('slug', slug)
-    .single()
+  // Run in parallel: category lookup + global storage total
+  const [{ data: dbCat }, { data: allSizes }] = await Promise.all([
+    supabase.from('categories').select('id, cover_image_url').eq('slug', slug).single(),
+    supabase.from('gallery_items').select('size_bytes'),
+  ])
 
   const categoryId = dbCat?.id ?? 0
+  const initialUsedBytes = (allSizes ?? []).reduce((sum, r) => sum + (r.size_bytes ?? 0), 0)
 
   const { data: items } = await supabase
     .from('gallery_items')
@@ -59,6 +60,7 @@ export default async function AdminCategoryPage({ params }: Props) {
         categorySlug={slug}
         categoryName={cat.name}
         initialCoverUrl={dbCat?.cover_image_url ?? null}
+        initialUsedBytes={initialUsedBytes}
       />
     </div>
   )

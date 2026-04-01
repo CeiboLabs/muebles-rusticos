@@ -7,15 +7,32 @@ import Lightbox from './Lightbox'
 
 interface Props {
   items: GalleryItem[]
+  categoryId: number
+  totalCount: number
 }
 
-const PAGE_SIZE = 12
+// Must match PAGE_SIZE in /app/api/gallery/route.ts
+const GALLERY_PAGE_SIZE = 24
 
-export default function GalleryGrid({ items }: Props) {
+export default function GalleryGrid({ items, categoryId, totalCount }: Props) {
+  const [allItems, setAllItems] = useState(items)
+  const [page, setPage] = useState(1)
+  const [loadingMore, setLoadingMore] = useState(false)
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
-  const [visible, setVisible] = useState(PAGE_SIZE)
 
-  if (!items.length) {
+  const hasMore = allItems.length < totalCount
+
+  async function loadMore() {
+    setLoadingMore(true)
+    const nextPage = page + 1
+    const res = await fetch(`/api/gallery?categoryId=${categoryId}&page=${nextPage}`)
+    const newItems: GalleryItem[] = await res.json()
+    setAllItems(prev => [...prev, ...newItems])
+    setPage(nextPage)
+    setLoadingMore(false)
+  }
+
+  if (!allItems.length) {
     return (
       <div className="text-center py-24">
         <div className="text-6xl mb-4">🪵</div>
@@ -27,13 +44,10 @@ export default function GalleryGrid({ items }: Props) {
     )
   }
 
-  const displayed = items.slice(0, visible)
-  const hasMore = visible < items.length
-
   return (
     <>
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-        {displayed.map((item, idx) => (
+        {allItems.map((item, idx) => (
           <div
             key={item.image_url}
             className="break-inside-avoid group relative cursor-pointer overflow-hidden rounded-sm bg-stone-100"
@@ -71,20 +85,21 @@ export default function GalleryGrid({ items }: Props) {
       {hasMore && (
         <div className="mt-10 text-center">
           <p className="font-sans text-sm text-stone-400 mb-4">
-            Mostrando {displayed.length} de {items.length} fotos
+            Mostrando {allItems.length} de {totalCount} fotos
           </p>
           <button
-            onClick={() => setVisible(v => v + PAGE_SIZE)}
-            className="btn-secondary"
+            onClick={loadMore}
+            disabled={loadingMore}
+            className="btn-secondary disabled:opacity-50"
           >
-            Cargar más fotos
+            {loadingMore ? 'Cargando...' : 'Cargar más fotos'}
           </button>
         </div>
       )}
 
       {lightboxIdx !== null && (
         <Lightbox
-          items={items}
+          items={allItems}
           initialIndex={lightboxIdx}
           onClose={() => setLightboxIdx(null)}
         />

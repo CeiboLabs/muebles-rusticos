@@ -12,6 +12,7 @@ export interface GalleryItem {
   title: string | null
   description: string | null
   image_url: string
+  size_bytes?: number | null
   created_at: string
   category?: Category
 }
