@@ -59,14 +59,20 @@ export default async function CategoryPage({ params }: Props) {
     .eq('slug', slug)
     .single()
 
-  // Fetch first page only; client loads more via /api/gallery
+  // Fetch first page + total count in parallel; client loads more via /api/gallery
   const INITIAL_LIMIT = 24
-  const { data: supabaseItems, count: totalCount } = await supabase
-    .from('gallery_items')
-    .select('id, image_url, title, description, created_at, category_id', { count: 'exact' })
-    .eq('category_id', dbCat?.id ?? 0)
-    .order('created_at', { ascending: false })
-    .limit(INITIAL_LIMIT)
+  const [{ data: supabaseItems }, { count: totalCount }] = await Promise.all([
+    supabase
+      .from('gallery_items')
+      .select('*')
+      .eq('category_id', dbCat?.id ?? 0)
+      .order('created_at', { ascending: false })
+      .limit(INITIAL_LIMIT),
+    supabase
+      .from('gallery_items')
+      .select('*', { count: 'exact', head: true })
+      .eq('category_id', dbCat?.id ?? 0),
+  ])
 
   const galleryItems = supabaseItems ?? []
   const categoryId = dbCat?.id ?? 0
