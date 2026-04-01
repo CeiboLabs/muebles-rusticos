@@ -11,8 +11,6 @@ interface Props {
   totalCount: number
 }
 
-// Must match PAGE_SIZE in /app/api/gallery/route.ts
-const GALLERY_PAGE_SIZE = 24
 
 function ItemCard({ item, globalIdx, onClick }: { item: GalleryItem; globalIdx: number; onClick: () => void }) {
   return (

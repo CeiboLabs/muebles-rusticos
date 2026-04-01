@@ -52,7 +52,7 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 mb-12 max-w-xs">
         <div className="bg-white rounded-sm border border-stone-100 p-6 shadow-sm">
           <div className="text-2xl mb-3">🖼️</div>
-          <div className="font-serif text-4xl font-bold text-stone-900 mb-1">{totalItems ?? 0}</div>
+          <div className="font-serif text-4xl font-bold text-stone-900 mb-1">{totalItems}</div>
           <div className="font-sans text-sm text-stone-500">Imágenes subidas</div>
         </div>
       </div>
