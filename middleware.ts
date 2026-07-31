@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
-const SECONDARY_DOMAINS = ['mueblesrusticos.uy', 'www.mueblesrusticos.uy']
+const SECONDARY_DOMAINS = ['mueblesrusticos.uy', 'www.mueblesrusticos.uy', 'www.mueblesrusticos.com.uy']
 const CANONICAL_ORIGIN = 'https://mueblesrusticos.com.uy'
 
 export async function middleware(request: NextRequest) {

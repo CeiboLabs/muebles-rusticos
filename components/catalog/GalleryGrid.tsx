@@ -8,11 +8,12 @@ import Lightbox from './Lightbox'
 interface Props {
   items: GalleryItem[]
   categoryId: number
+  categoryName: string
   totalCount: number
 }
 
 
-function ItemCard({ item, globalIdx, onClick }: { item: GalleryItem; globalIdx: number; onClick: () => void }) {
+function ItemCard({ item, categoryName, globalIdx, onClick }: { item: GalleryItem; categoryName: string; globalIdx: number; onClick: () => void }) {
   return (
     <div
       className="group relative cursor-pointer overflow-hidden rounded-sm bg-stone-100"
@@ -21,7 +22,7 @@ function ItemCard({ item, globalIdx, onClick }: { item: GalleryItem; globalIdx: 
       <div className="relative w-full">
         <Image
           src={item.image_url}
-          alt={item.title ?? 'Mueble rústico'}
+          alt={item.title ?? `Mueble rústico de ${categoryName}`}
           width={800}
           height={600}
           style={{ height: 'auto' }}
@@ -46,7 +47,7 @@ function ItemCard({ item, globalIdx, onClick }: { item: GalleryItem; globalIdx: 
   )
 }
 
-export default function GalleryGrid({ items, categoryId, totalCount }: Props) {
+export default function GalleryGrid({ items, categoryId, categoryName, totalCount }: Props) {
   const [allItems, setAllItems] = useState(items)
   const [page, setPage] = useState(1)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -97,7 +98,7 @@ export default function GalleryGrid({ items, categoryId, totalCount }: Props) {
       {/* Mobile: single column */}
       <div className="flex flex-col gap-4 sm:hidden">
         {allItems.map((item, idx) => (
-          <ItemCard key={item.image_url} item={item} globalIdx={idx} onClick={() => setLightboxIdx(idx)} />
+          <ItemCard key={item.image_url} item={item} categoryName={categoryName} globalIdx={idx} onClick={() => setLightboxIdx(idx)} />
         ))}
       </div>
 
@@ -106,7 +107,7 @@ export default function GalleryGrid({ items, categoryId, totalCount }: Props) {
         {cols2.map((colItems, colIdx) => (
           <div key={colIdx} className="flex flex-col gap-4">
             {colItems.map(({ item, globalIdx }) => (
-              <ItemCard key={item.image_url} item={item} globalIdx={globalIdx} onClick={() => setLightboxIdx(globalIdx)} />
+              <ItemCard key={item.image_url} item={item} categoryName={categoryName} globalIdx={globalIdx} onClick={() => setLightboxIdx(globalIdx)} />
             ))}
           </div>
         ))}
@@ -117,7 +118,7 @@ export default function GalleryGrid({ items, categoryId, totalCount }: Props) {
         {cols3.map((colItems, colIdx) => (
           <div key={colIdx} className="flex flex-col gap-4">
             {colItems.map(({ item, globalIdx }) => (
-              <ItemCard key={item.image_url} item={item} globalIdx={globalIdx} onClick={() => setLightboxIdx(globalIdx)} />
+              <ItemCard key={item.image_url} item={item} categoryName={categoryName} globalIdx={globalIdx} onClick={() => setLightboxIdx(globalIdx)} />
             ))}
           </div>
         ))}
@@ -141,6 +142,7 @@ export default function GalleryGrid({ items, categoryId, totalCount }: Props) {
       {lightboxIdx !== null && (
         <Lightbox
           items={allItems}
+          categoryName={categoryName}
           initialIndex={lightboxIdx}
           onClose={() => setLightboxIdx(null)}
         />

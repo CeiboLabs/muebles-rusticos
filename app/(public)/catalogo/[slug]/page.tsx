@@ -111,7 +111,7 @@ export default async function CategoryPage({ params }: Props) {
       {/* Gallery */}
       <section className="py-12 bg-white">
         <div className="container-max section-padding">
-          <GalleryGrid items={galleryItems} categoryId={categoryId} totalCount={totalCount ?? galleryItems.length} />
+          <GalleryGrid items={galleryItems} categoryId={categoryId} categoryName={cat.name} totalCount={totalCount ?? galleryItems.length} />
         </div>
       </section>
 

@@ -6,11 +6,12 @@ import type { GalleryItem } from '@/lib/types'
 
 interface Props {
   items: GalleryItem[]
+  categoryName: string
   initialIndex: number
   onClose: () => void
 }
 
-export default function Lightbox({ items, initialIndex, onClose }: Props) {
+export default function Lightbox({ items, categoryName, initialIndex, onClose }: Props) {
   const [idx, setIdx] = useState(initialIndex)
   const current = items[idx]
 
@@ -87,7 +88,7 @@ export default function Lightbox({ items, initialIndex, onClose }: Props) {
         <div className="relative flex-1 w-full min-h-0">
           <Image
             src={current.image_url}
-            alt={current.title ?? 'Mueble rústico'}
+            alt={current.title ?? `Mueble rústico de ${categoryName}`}
             fill
             className="object-contain"
             sizes="90vw"
