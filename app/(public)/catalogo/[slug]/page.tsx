@@ -92,9 +92,9 @@ export default async function CategoryPage({ params }: Props) {
           </nav>
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
+            <div className="max-w-2xl">
               <h1 className="font-serif text-4xl font-bold text-stone-900">{cat.name}</h1>
-              <p className="mt-2 font-sans text-stone-500">{cat.description}</p>
+              <p className="mt-2 font-sans text-stone-500 leading-relaxed">{cat.longDescription ?? cat.description}</p>
             </div>
             <a
               href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hola,%20estoy%20interesado%20en%20${encodeURIComponent(cat.name)}`}
