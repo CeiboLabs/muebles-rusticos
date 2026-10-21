@@ -100,13 +100,15 @@ export default function Footer() {
           <p className="font-sans text-xs text-stone-400">
             Desarrollado por{' '}
             <a
-              href="https://ceibolabs.dev"
+              href="https://brunojorba.com"
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold text-stone-300 hover:text-wood-400 transition-colors"
             >
-              Ceibo Labs
+              Bruno Jorba
             </a>
+            {' & '}
+            <span className="font-semibold text-stone-300">Emiliano Rodriguez</span>
           </p>
         </div>
       </div>
