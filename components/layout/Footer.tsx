@@ -102,7 +102,7 @@ export default function Footer() {
             <a
               href="https://brunojorba.com"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
               className="font-semibold text-stone-300 underline underline-offset-2 hover:text-wood-400 transition-colors"
             >
               Bruno Jorba
